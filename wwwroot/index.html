@@ -653,6 +653,54 @@
         </div>
     </div>
 
+    <!-- ==================== MOBILE NAVIGATION ==================== -->
+    <div class="mobile-nav-bar">
+        <button class="mobile-nav-item active" data-view="dashboard" onclick="switchView('dashboard')">
+            <i class="fa-solid fa-chart-simple"></i>
+            <span>Home</span>
+        </button>
+        <button class="mobile-nav-item" data-view="notes" onclick="switchView('notes')">
+            <i class="fa-solid fa-file-lines"></i>
+            <span>Study</span>
+        </button>
+        <button class="mobile-nav-item" data-view="chat" onclick="switchView('chat')">
+            <i class="fa-solid fa-comments"></i>
+            <span>Chat</span>
+        </button>
+        <button class="mobile-nav-item" data-view="roadmap" onclick="switchView('roadmap')">
+            <i class="fa-solid fa-compass"></i>
+            <span>Roadmap</span>
+        </button>
+        <button class="mobile-nav-item" id="btnMobileMenu">
+            <i class="fa-solid fa-bars"></i>
+            <span>Menu</span>
+        </button>
+    </div>
+
+    <!-- Mobile Drawer Overlay Menu -->
+    <div class="mobile-drawer" id="mobileDrawer">
+        <div class="mobile-drawer-content">
+            <div class="mobile-drawer-header">
+                <h3>All Features</h3>
+                <button class="drawer-close" id="btnDrawerClose">&times;</button>
+            </div>
+            <ul class="drawer-links">
+                <li class="drawer-item" data-view="dashboard"><a href="#dashboard" onclick="closeDrawer()"><i class="fa-solid fa-chart-simple"></i> Dashboard</a></li>
+                <li class="drawer-item" data-view="notes"><a href="#notes" onclick="closeDrawer()"><i class="fa-solid fa-file-lines"></i> Study Materials</a></li>
+                <li class="drawer-item" data-view="chat"><a href="#chat" onclick="closeDrawer()"><i class="fa-solid fa-comments"></i> Chat with Notes</a></li>
+                <li class="drawer-item" data-view="quizzes"><a href="#quizzes" onclick="closeDrawer()"><i class="fa-solid fa-circle-question"></i> Quizzes</a></li>
+                <li class="drawer-item" data-view="flashcards"><a href="#flashcards" onclick="closeDrawer()"><i class="fa-solid fa-note-sticky"></i> Flashcards</a></li>
+                <li class="drawer-item" data-view="planner"><a href="#planner" onclick="closeDrawer()"><i class="fa-solid fa-calendar-check"></i> Study Planner</a></li>
+                <li class="drawer-item" data-view="roadmap"><a href="#roadmap" onclick="closeDrawer()"><i class="fa-solid fa-compass"></i> Career Roadmap</a></li>
+                <li class="drawer-item" data-view="leaderboard"><a href="#leaderboard" onclick="closeDrawer()"><i class="fa-solid fa-trophy"></i> Leaderboard</a></li>
+                <li class="drawer-item" data-view="settings"><a href="#settings" onclick="closeDrawer()"><i class="fa-solid fa-sliders"></i> Settings</a></li>
+                <li style="border-top: 1px solid var(--border-color); margin-top: 16px; padding-top: 16px;">
+                    <a href="#" onclick="logout(); closeDrawer();" style="color: var(--danger);"><i class="fa-solid fa-power-off"></i> Log Out</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
     <!-- JS Scripts -->
     <script src="app.js"></script>
 </body>

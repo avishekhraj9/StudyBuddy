@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupQuizListeners();
     setupPlannerListeners();
     setupRoadmapListeners();
+    setupMobileMenu();
     
     if (token) {
         verifySession();
@@ -196,6 +197,9 @@ function switchView(viewName) {
     document.querySelectorAll('.nav-item').forEach(item => {
         item.classList.remove('active');
     });
+    document.querySelectorAll('.mobile-nav-item').forEach(item => {
+        item.classList.remove('active');
+    });
 
     // Show selected view
     const activeView = document.getElementById(`view-${viewName}`);
@@ -207,6 +211,10 @@ function switchView(viewName) {
     const activeMenu = document.querySelector(`.nav-item[data-view="${viewName}"]`);
     if (activeMenu) {
         activeMenu.classList.add('active');
+    }
+    const activeMobileMenu = document.querySelector(`.mobile-nav-bar [data-view="${viewName}"]`);
+    if (activeMobileMenu) {
+        activeMobileMenu.classList.add('active');
     }
 
     // View-specific loaders
@@ -1698,4 +1706,35 @@ function parseMarkdown(text) {
     // Line breaks
     html = html.replaceAll('\n', '<br>');
     return html;
+}
+
+// ==================== MOBILE MENU HANDLERS ====================
+
+function setupMobileMenu() {
+    const btnMenu = document.getElementById('btnMobileMenu');
+    const drawer = document.getElementById('mobileDrawer');
+    const btnClose = document.getElementById('btnDrawerClose');
+
+    if (btnMenu && drawer && btnClose) {
+        btnMenu.addEventListener('click', () => {
+            drawer.classList.add('open');
+        });
+
+        btnClose.addEventListener('click', () => {
+            drawer.classList.remove('open');
+        });
+
+        drawer.addEventListener('click', (e) => {
+            if (e.target === drawer) {
+                drawer.classList.remove('open');
+            }
+        });
+    }
+}
+
+function closeDrawer() {
+    const drawer = document.getElementById('mobileDrawer');
+    if (drawer) {
+        drawer.classList.remove('open');
+    }
 }
