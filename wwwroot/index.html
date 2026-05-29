@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Study Buddy - Accelerate Your Learning</title>
+    <!-- CSS Dependencies -->
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+
+    <!-- ==================== AUTH CONTAINER ==================== -->
+    <div id="authContainer" class="auth-container">
+        <!-- Login Card -->
+        <div id="loginCard" class="auth-card">
+            <div class="auth-header">
+                <div class="logo-icon" style="margin: 0 auto 16px;">🎓</div>
+                <h1 class="auth-title">AI Study Buddy</h1>
+                <p class="auth-subtitle">Log in to access your notes and study planner</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" class="form-control" placeholder="name@domain.com" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
+                    Log In <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+            <p style="text-align: center; margin-top: 24px; font-size: 13px; color: var(--text-muted);">
+                Don't have an account? <a href="#" id="toRegister" style="color: var(--primary); text-decoration: none; font-weight: 600;">Create one</a>
+            </p>
+        </div>
+
+        <!-- Register Card -->
+        <div id="registerCard" class="auth-card" style="display: none;">
+            <div class="auth-header">
+                <div class="logo-icon" style="margin: 0 auto 16px;">🎓</div>
+                <h1 class="auth-title">Get Started</h1>
+                <p class="auth-subtitle">Create a free account to power up your studies</p>
+            </div>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label class="form-label" for="registerName">Full Name</label>
+                    <input type="text" id="registerName" class="form-control" placeholder="John Doe" required autocomplete="name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="registerEmail">Email Address</label>
+                    <input type="email" id="registerEmail" class="form-control" placeholder="name@domain.com" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" class="form-control" placeholder="••••••••" required autocomplete="new-password">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
+                    Create Account <i class="fa-solid fa-user-plus"></i>
+                </button>
+            </form>
+            <p style="text-align: center; margin-top: 24px; font-size: 13px; color: var(--text-muted);">
+                Already have an account? <a href="#" id="toLogin" style="color: var(--primary); text-decoration: none; font-weight: 600;">Log in</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- ==================== MAIN APPLICATION LAYOUT ==================== -->
+    <div id="appContainer" class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <div class="logo-icon">🎓</div>
+                <span class="logo-text">Study Buddy</span>
+            </div>
+
+            <ul class="nav-links">
+                <li class="nav-item active" data-view="dashboard">
+                    <a href="#dashboard"><i class="fa-solid fa-chart-simple"></i> Dashboard</a>
+                </li>
+                <li class="nav-item" data-view="notes">
+                    <a href="#notes"><i class="fa-solid fa-file-lines"></i> Study Materials</a>
+                </li>
+                <li class="nav-item" data-view="chat">
+                    <a href="#chat"><i class="fa-solid fa-comments"></i> Chat with Notes</a>
+                </li>
+                <li class="nav-item" data-view="quizzes">
+                    <a href="#quizzes"><i class="fa-solid fa-circle-question"></i> Quizzes</a>
+                </li>
+                <li class="nav-item" data-view="flashcards">
+                    <a href="#flashcards"><i class="fa-solid fa-note-sticky"></i> Flashcards</a>
+                </li>
+                <li class="nav-item" data-view="planner">
+                    <a href="#planner"><i class="fa-solid fa-calendar-check"></i> Study Planner</a>
+                </li>
+                <li class="nav-item" data-view="roadmap">
+                    <a href="#roadmap"><i class="fa-solid fa-compass"></i> Career Roadmap</a>
+                </li>
+                <li class="nav-item" data-view="leaderboard">
+                    <a href="#leaderboard"><i class="fa-solid fa-trophy"></i> Leaderboard</a>
+                </li>
+                <li class="nav-item" data-view="settings">
+                    <a href="#settings"><i class="fa-solid fa-sliders"></i> Settings</a>
+                </li>
+            </ul>
+
+            <div class="sidebar-user">
+                <div class="user-avatar" id="sidebarAvatar">U</div>
+                <div class="user-info">
+                    <div class="user-name" id="sidebarUserName">Loading...</div>
+                    <div class="user-email" id="sidebarUserEmail">Loading...</div>
+                </div>
+                <button class="btn-logout" id="btnLogout" title="Log Out">
+                    <i class="fa-solid fa-power-off"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- 1. DASHBOARD VIEW -->
+            <section id="view-dashboard" class="app-view fade-in">
+                <div class="section-header">
+                    <h2 class="section-title">Welcome back, <span id="dashGreetingName">Student</span>!</h2>
+                    <button class="btn btn-primary" onclick="switchView('notes')">
+                        <i class="fa-solid fa-plus"></i> Upload Notes
+                    </button>
+                </div>
+
+                <!-- Dashboard Statistics Cards -->
+                <div class="dashboard-grid">
+                    <div class="stats-card">
+                        <div class="stats-icon icon-notes"><i class="fa-solid fa-book-bookmark"></i></div>
+                        <div class="stats-info">
+                            <h3>Notes Uploaded</h3>
+                            <p id="statNotes">0</p>
+                        </div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-icon icon-quiz"><i class="fa-solid fa-feather-pointed"></i></div>
+                        <div class="stats-info">
+                            <h3>Quizzes Taken</h3>
+                            <p id="statQuizzes">0</p>
+                        </div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-icon icon-score"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <div class="stats-info">
+                            <h3>Avg Score</h3>
+                            <p><span id="statScore">0</span>%</p>
+                        </div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-icon icon-streak"><i class="fa-solid fa-fire"></i></div>
+                        <div class="stats-info">
+                            <h3>Study Streak</h3>
+                            <p><span id="statStreak">1</span> Days</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 32px;">
+                    <!-- Learning Progress card -->
+                    <div class="stats-card" style="flex-direction: column; align-items: stretch; gap: 20px;">
+                        <h3 style="font-family: var(--font-outfit); font-size: 18px;">💡 Study Tips & Activities</h3>
+                        <div style="display: flex; flex-direction: column; gap: 12px; font-size: 14px; color: var(--text-muted);">
+                            <div style="padding: 12px; background: rgba(255,255,255,0.02); border-radius: 8px; border-left: 3px solid var(--primary);">
+                                <strong>Active Recall:</strong> Generate a quiz for your notes under the <em>Quizzes</em> tab. Taking quizzes is twice as effective as simple highlighting!
+                            </div>
+                            <div style="padding: 12px; background: rgba(255,255,255,0.02); border-radius: 8px; border-left: 3px solid var(--secondary);">
+                                <strong>Spaced Repetition:</strong> Visit the <em>Flashcards</em> tab daily. Our smart box scheduler handles the review dates for you automatically.
+                            </div>
+                            <div style="padding: 12px; background: rgba(255,255,255,0.02); border-radius: 8px; border-left: 3px solid var(--success);">
+                                <strong>Exam Countdown:</strong> Enter details in the <em>Study Planner</em> to keep a real-time tracking calendar on your dashboard.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick streak info -->
+                    <div class="stats-card" style="flex-direction: column; justify-content: center; text-align: center;">
+                        <div style="font-size: 40px; color: #ec4899; margin-bottom: 12px;"><i class="fa-solid fa-award"></i></div>
+                        <h3 style="font-family: var(--font-outfit); font-size: 20px; color: var(--text-main);">Daily Streak</h3>
+                        <p style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">Keep uploading files and reviewing study materials daily to build up your XP multiplier!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. STUDY MATERIALS VIEW -->
+            <section id="view-notes" class="app-view fade-in" style="display: none;">
+                <div class="section-header">
+                    <h2 class="section-title">Study Materials</h2>
+                </div>
+
+                <!-- Drag & Drop Uploader -->
+                <div class="upload-zone" id="uploadZone">
+                    <input type="file" id="fileInput" accept=".pdf,.docx,.txt" style="display: none;">
+                    <div class="upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+                    <div class="upload-text">Drag & drop your study files here</div>
+                    <div class="upload-subtext">Supports PDF, DOCX, and TXT up to 10MB</div>
+                    <div style="margin-top: 16px; display: inline-block;">
+                        <input type="text" id="uploadSubject" class="form-control" placeholder="Subject (e.g. Biology, History)" style="max-width: 250px; text-align: center;">
+                    </div>
+
+                    <!-- Progress bar -->
+                    <div class="progress-container" id="uploadProgressContainer">
+                        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted);">
+                            <span id="uploadStatusText">Extracting text & generating summary...</span>
+                            <span id="uploadProgressPercent">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="uploadProgressFill"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filter & Search Toolbar -->
+                <div class="notes-toolbar">
+                    <div class="notes-search-wrapper">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="noteSearchInput" class="form-control" placeholder="Search note titles or content...">
+                    </div>
+                    <select id="noteSubjectFilter" class="form-control" style="max-width: 200px;">
+                        <option value="">All Subjects</option>
+                    </select>
+                </div>
+
+                <!-- Notes Grid -->
+                <div class="notes-grid" id="notesGrid">
+                    <!-- Loaded dynamically -->
+                </div>
+            </section>
+
+            <!-- 3. AI CHAT VIEW -->
+            <section id="view-chat" class="app-view fade-in" style="display: none;">
+                <div class="section-header">
+                    <h2 class="section-title">Chat with Notes</h2>
+                </div>
+
+                <div class="chat-container">
+                    <div class="chat-sidebar">
+                        <div class="chat-sidebar-header">Select Document</div>
+                        <div class="chat-note-list" id="chatNoteList">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                    <div class="chat-main">
+                        <div class="chat-header" id="chatHeaderTitle">No Note Selected</div>
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="chat-message ai">
+                                Please select a study note from the left sidebar to start asking questions.
+                            </div>
+                        </div>
+                        <div class="chat-input-area">
+                            <input type="text" id="chatInput" class="form-control" placeholder="Ask something about these notes..." disabled>
+                            <button id="btnChatSend" class="btn btn-primary" disabled><i class="fa-solid fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. QUIZZES VIEW -->
+            <section id="view-quizzes" class="app-view fade-in" style="display: none;">
+                <div class="section-header">
+                    <h2 class="section-title">Active Recall Quizzes</h2>
+                </div>
+
+                <div class="quiz-welcome" id="quizWelcomeScreen">
+                    <div style="font-size: 50px; color: var(--primary); margin-bottom: 20px;"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <h3 style="font-family: var(--font-outfit); font-size: 24px; margin-bottom: 12px;">Test Your Knowledge</h3>
+                    <p style="color: var(--text-muted); max-width: 500px; margin: 0 auto 30px; font-size: 14px;">
+                        Select one of your uploaded notes to generate an interactive quiz. Instant AI grading and explanations will help you learn.
+                    </p>
+                    <div class="form-group" style="max-width: 300px; margin: 0 auto 20px;">
+                        <select id="quizNoteSelector" class="form-control">
+                            <option value="">Select a Study Note</option>
+                        </select>
+                    </div>
+                    <button id="btnGenerateQuiz" class="btn btn-primary">
+                        Generate Custom Quiz <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </button>
+                </div>
+
+                <!-- Active Quiz Player -->
+                <div class="quiz-container" id="quizPlayerArea" style="display: none;">
+                    <div class="quiz-card">
+                        <div class="quiz-progress">
+                            <span id="quizQuestionNumber">Question 1 of 5</span>
+                            <span id="quizScoreTracker">Score: 0/0</span>
+                        </div>
+                        <div class="quiz-question" id="quizQuestionText">Loading...</div>
+                        <div class="quiz-options" id="quizOptionsContainer">
+                            <!-- options populated dynamically -->
+                        </div>
+                        <div class="quiz-explanation" id="quizExplanationArea" style="display: none;">
+                            <strong>Explanation:</strong> <span id="quizExplanationText"></span>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <button id="btnQuizQuit" class="btn btn-secondary">Quit Quiz</button>
+                        <button id="btnQuizNext" class="btn btn-primary" disabled>Next Question <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Quiz Score Card -->
+                <div class="score-screen" id="quizScoreScreen" style="display: none;">
+                    <div class="score-circle" id="quizScoreCircle">
+                        <div class="score-text" id="quizScorePercent">80%</div>
+                    </div>
+                    <h3 style="font-family: var(--font-outfit); font-size: 26px; margin-bottom: 12px;">Quiz Complete!</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 30px;" id="quizScoreMessage">Excellent job! You are grasping this topic well.</p>
+                    <button class="btn btn-primary" onclick="resetQuizScreen()">Finish & Return</button>
+                </div>
+            </section>
+
+            <!-- 5. FLASHCARDS VIEW -->
+            <section id="view-flashcards" class="app-view fade-in" style="display: none;">
+                <div class="section-header">
+                    <h2 class="section-title">Vocabulary Flashcards</h2>
+                </div>
+
+                <!-- Select note to load/generate cards -->
+                <div id="flashcardSelectorScreen" class="quiz-welcome">
+                    <div style="font-size: 50px; color: var(--secondary); margin-bottom: 20px;"><i class="fa-solid fa-clone"></i></div>
+                    <h3 style="font-family: var(--font-outfit); font-size: 24px; margin-bottom: 12px;">Spaced Repetition Practice</h3>
+                    <p style="color: var(--text-muted); max-width: 500px; margin: 0 auto 30px; font-size: 14px;">
+                        Spaced repetition is the most effective method for memorizing terms. Pick a document and study its key vocabulary.
+                    </p>
+                    <div class="form-group" style="max-width: 300px; margin: 0 auto 20px;">
+                        <select id="flashcardNoteSelector" class="form-control">
+                            <option value="">Select a Study Note</option>
+                        </select>
+                    </div>
+                    <button id="btnLoadFlashcards" class="btn btn-primary">
+                        Start Studying <i class="fa-solid fa-book-open"></i>
+                    </button>
+                </div>
+
+                <!-- Active Flashcard Study -->
+                <div id="flashcardStudyArea" class="flashcards-layout" style="display: none;">
+                    <div style="width: 100%; display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted);">
+                        <span id="flashcardProgressText">Card 1 of 8</span>
+                        <span>Click card to reveal definition</span>
+                    </div>
+
+                    <div class="flashcard-wrapper" id="flashcardWrapper">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">
+                                <div class="flashcard-term" id="flashcardFrontText">Term</div>
+                                <div class="flashcard-hint">Front</div>
+                            </div>
+                            <div class="flashcard-back">
+                                <div class="flashcard-definition" id="flashcardBackText">Definition details go here...</div>
+                                <div class="flashcard-hint">Back</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Spaced Repetition Buttons -->
+                    <div class="flashcard-actions" id="flashcardAnswerButtons" style="visibility: hidden;">
+                        <button class="btn btn-danger" onclick="reviewFlashcard(false)">
+                            <i class="fa-solid fa-thumbs-down" style="font-size: 18px; margin-bottom: 4px;"></i>
+                            <span>Forgot (Review Soon)</span>
+                        </button>
+                        <button class="btn btn-primary" style="background: var(--success);" onclick="reviewFlashcard(true)">
+                            <i class="fa-solid fa-thumbs-up" style="font-size: 18px; margin-bottom: 4px;"></i>
+                            <span>Got It (Space Out)</span>
+                        </button>
+                    </div>
+
+                    <div style="width: 100%; text-align: left; margin-top: 10px;">
+                        <button class="btn btn-secondary" onclick="exitFlashcardDeck()"><i class="fa-solid fa-arrow-left-long"></i> End Session</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. STUDY PLANNER VIEW -->
+            <section id="view-planner" class="app-view fade-in" style="display: none;">
+                <div class="section-header">
+                    <h2 class="section-title">Study Planner</h2>
+                </div>
+
+                <div class="planner-layout">
+                    <div class="planner-board">
+                        <!-- Add Task Card -->
+                        <div class="planner-form-card">
+                            <h3 style="font-family: var(--font-outfit); font-size: 18px; margin-bottom: 16px;">Add Study Task</h3>
+                            <form id="plannerForm" class="planner-form">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label class="form-label" for="taskText">Task / Topic</label>
+                                    <input type="text" id="taskText" class="form-control" placeholder="e.g. Read Chapter 4 Biology notes" required>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label class="form-label" for="taskCategory">Category</label>
+                                    <select id="taskCategory" class="form-control">
+                                        <option value="Daily Goal">Daily Goal</option>
+                                        <option value="Weekly Schedule">Weekly Schedule</option>
+                                        <option value="Exam Countdown">Exam Countdown</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label class="form-label" for="taskDate">Due Date</label>
+                                    <input type="date" id="taskDate" class="form-control" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary" style="height: 45px;">Add Task</button>
+                            </form>
+                        </div>
+
+                        <!-- Active Task List -->
+                        <div class="task-list" id="taskListContainer">
+                            <h3 style="font-family: var(--font-outfit); font-size: 18px; margin-bottom: 8px;">Active Goals</h3>
+                            <div id="plannerTasks" style="display: flex; flex-direction: column; gap: 10px;">
+                                <!-- Loaded dynamically -->
+                                <p style="color: var(--text-muted); font-size: 14px; text-align: center; padding: 20px;">No goals added yet. Plan some tasks above!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Countdown sidebar -->
+                    <div class="countdown-sidebar">
+                        <div class="countdown-card">
+                            <h3 style="font-family: var(--font-outfit); font-size: 16px;">Exam Countdown</h3>
+                            <div class="countdown-timer" id="examCountdownTimer">--</div>
+                            <div class="countdown-label" id="examCountdownLabel">No exam date configured</div>
+                            <div style="margin-top: 16px;">
+                                <input type="date" id="settingsExamDate" class="form-control" style="text-align: center; margin-bottom: 8px; font-size: 12px; padding: 8px;">
+                                <input type="text" id="settingsExamName" class="form-control" placeholder="Exam Name (e.g. Midterm)" style="text-align: center; font-size: 12px; padding: 8px;">
+                                <button class="btn btn-secondary btn-sm" style="width:100%; margin-top: 8px; font-size: 11px; padding: 6px;" onclick="saveExamCountdown()">Set Date</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6.5. CAREER ROADMAP VIEW -->
+            <section id="view-roadmap" class="app-view fade-in" style="display: none;">
+                <div class="section-header">
+                    <h2 class="section-title">AI Career Roadmap</h2>
+                </div>
+
+                <div class="planner-layout" style="grid-template-columns: 1fr 340px;">
+                    <div class="planner-board">
+                        <!-- Goal Setup Card -->
+                        <div class="planner-form-card">
+                            <h3 style="font-family: var(--font-outfit); font-size: 18px; margin-bottom: 16px;">Set Career Goal</h3>
+                            <div style="display: flex; gap: 16px; align-items: flex-end;">
+                                <div class="form-group" style="margin-bottom: 0; flex-grow: 1;">
+                                    <label class="form-label" for="roadmapGoalSelector">Select Career Track</label>
+                                    <select id="roadmapGoalSelector" class="form-control">
+                                        <option value=".NET Developer">.NET Developer</option>
+                                        <option value="Data Scientist">Data Scientist</option>
+                                        <option value="Data Analyst">Data Analyst</option>
+                                        <option value="Cloud Engineer">Cloud Engineer</option>
+                                        <option value="DevOps Engineer">DevOps Engineer</option>
+                                    </select>
+                                </div>
+                                <button id="btnGenerateRoadmap" class="btn btn-primary" style="height: 45px;">
+                                    Generate Roadmap <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Skill Tree Roadmap Nodes -->
+                        <div class="task-list" id="roadmapListContainer">
+                            <h3 style="font-family: var(--font-outfit); font-size: 18px; margin-bottom: 12px;" id="roadmapTitle">Roadmap Timeline</h3>
+                            <div id="roadmapNodes" style="display: flex; flex-direction: column; gap: 16px;">
+                                <p style="color: var(--text-muted); font-size: 14px; text-align: center; padding: 20px;">No career goal set yet. Select a track above to generate your learning path!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Progress & Recommendations -->
+                    <div class="countdown-sidebar">
+                        <!-- Job Readiness Score -->
+                        <div class="countdown-card">
+                            <h3 style="font-family: var(--font-outfit); font-size: 16px;">Job Readiness Score</h3>
+                            <div class="score-circle" id="readinessScoreCircle" style="width: 120px; height: 120px; margin: 16px auto;">
+                                <div class="score-text" id="readinessScorePercent" style="font-size: 28px;">0%</div>
+                            </div>
+                            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.4;">
+                                Calculated based on completed skill milestones. Build projects and mark nodes to increase your score!
+                            </p>
+                        </div>
+
+                        <!-- Recommendations based on quiz scores -->
+                        <div class="countdown-card" id="recommendationAlertCard" style="display: none; text-align: left;">
+                            <h3 style="font-family: var(--font-outfit); font-size: 14px; color: var(--warning); margin-bottom: 12px;">
+                                <i class="fa-solid fa-triangle-exclamation"></i> Study Recommendations
+                            </h3>
+                            <div id="recommendationAlertContent" style="font-size: 12px; line-height: 1.5; color: var(--text-muted); display: flex; flex-direction: column; gap: 10px;">
+                                <!-- Loaded dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. LEADERBOARD VIEW -->
+            <section id="view-leaderboard" class="app-view fade-in" style="display: none;">
+                <div class="section-header">
+                    <h2 class="section-title">Rankings & Leaderboard</h2>
+                </div>
+
+                <div style="max-width: 600px; margin: 0 auto 30px; text-align: center;">
+                    <h3 style="font-family: var(--font-outfit); font-size: 22px; margin-bottom: 8px;">Study League</h3>
+                    <p style="color: var(--text-muted); font-size: 14px;">Compete with simulated student peers by generating summaries and scoring high on quizzes to earn XP!</p>
+                </div>
+
+                <div class="leaderboard-list">
+                    <div class="leaderboard-item">
+                        <span class="leaderboard-rank">1</span>
+                        <span class="leaderboard-name">Sophia Martinez 👑</span>
+                        <span class="leaderboard-score">1,480 XP</span>
+                    </div>
+                    <div class="leaderboard-item">
+                        <span class="leaderboard-rank">2</span>
+                        <span class="leaderboard-name">Liam Johnson</span>
+                        <span class="leaderboard-score">1,240 XP</span>
+                    </div>
+                    <div class="leaderboard-item">
+                        <span class="leaderboard-rank">3</span>
+                        <span class="leaderboard-name">Emma Brown</span>
+                        <span class="leaderboard-score">1,110 XP</span>
+                    </div>
+                    <!-- The current user row is inserted here dynamically or static comparison -->
+                    <div class="leaderboard-item" style="background: var(--primary-glow); border-radius: 8px; margin: 8px 0; border: 1px solid var(--primary);">
+                        <span class="leaderboard-rank" style="color: var(--text-main);">4</span>
+                        <span class="leaderboard-name" id="leaderboardUserName" style="font-weight: 700;">You</span>
+                        <span class="leaderboard-score" id="leaderboardUserScore">0 XP</span>
+                    </div>
+                    <div class="leaderboard-item">
+                        <span class="leaderboard-rank">5</span>
+                        <span class="leaderboard-name">Noah Davis</span>
+                        <span class="leaderboard-score">820 XP</span>
+                    </div>
+                    <div class="leaderboard-item">
+                        <span class="leaderboard-rank">6</span>
+                        <span class="leaderboard-name">Olivia Wilson</span>
+                        <span class="leaderboard-score">760 XP</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8. SETTINGS VIEW -->
+            <section id="view-settings" class="app-view fade-in" style="display: none;">
+                <div class="section-header">
+                    <h2 class="section-title">Settings</h2>
+                </div>
+
+                <div class="auth-card" style="max-width: 600px; margin: 0 auto; padding: 32px;">
+                    <h3 style="font-family: var(--font-outfit); font-size: 20px; margin-bottom: 24px;"><i class="fa-solid fa-robot"></i> AI Integration Settings</h3>
+                    <div class="form-group">
+                        <label class="form-label" for="settingsOpenAiKey">Custom OpenAI API Key</label>
+                        <input type="password" id="settingsOpenAiKey" class="form-control" placeholder="sk-proj-...">
+                        <p style="font-size: 11px; color: var(--text-muted); margin-top: 8px; line-height: 1.4;">
+                            Providing your own OpenAI Key will enable full AI summaries, comprehensive chat functionality, and smart MCQ generations. It is saved locally in your browser and never sent to third parties.
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 12px; margin-top: 16px;">
+                        <button class="btn btn-primary" onclick="saveApiKey()">Save API Key</button>
+                        <button class="btn btn-secondary" onclick="clearApiKey()">Clear API Key</button>
+                    </div>
+
+                    <h3 style="font-family: var(--font-outfit); font-size: 20px; margin-top: 40px; margin-bottom: 24px;"><i class="fa-solid fa-circle-user"></i> Profile Info</h3>
+                    <div class="form-group">
+                        <label class="form-label">User ID</label>
+                        <input type="text" id="settingsUserId" class="form-control" readonly style="opacity: 0.7;">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Joined Date</label>
+                        <input type="text" id="settingsUserJoined" class="form-control" readonly style="opacity: 0.7;">
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ==================== NOTE VIEW / SUMMARY MODAL ==================== -->
+    <div class="modal" id="noteModal">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none; padding-bottom: 8px;">
+                <h3 class="modal-title" id="noteModalTitle">Note Title</h3>
+                <button class="modal-close" onclick="closeNoteModal()">&times;</button>
+            </div>
+            
+            <!-- Modal Tabs -->
+            <div class="modal-tabs" style="display: flex; gap: 16px; border-bottom: 1px solid var(--border-color); padding: 0 24px; background: rgba(0,0,0,0.1);">
+                <button class="modal-tab active" id="modalTab-summary" onclick="switchModalTab('summary')" style="background:none; border:none; padding:12px 16px; color:var(--text-main); font-weight:600; cursor:pointer; border-bottom:2px solid var(--primary); font-family:var(--font-inter); font-size:13px;">AI Summary</button>
+                <button class="modal-tab" id="modalTab-videos" onclick="switchModalTab('videos')" style="background:none; border:none; padding:12px 16px; color:var(--text-muted); font-weight:600; cursor:pointer; border-bottom:2px solid transparent; font-family:var(--font-inter); font-size:13px;">Recommended Videos</button>
+                <button class="modal-tab" id="modalTab-resources" onclick="switchModalTab('resources')" style="background:none; border:none; padding:12px 16px; color:var(--text-muted); font-weight:600; cursor:pointer; border-bottom:2px solid transparent; font-family:var(--font-inter); font-size:13px;">📚 Resource Hub</button>
+            </div>
+
+            <div class="modal-body" style="padding: 24px; overflow-y: auto; flex-grow: 1; min-height: 400px;">
+                <!-- Panel 1: Summary -->
+                <div id="modalPanel-summary" class="modal-panel">
+                    <div class="summary-markdown" id="noteModalSummary">
+                        <!-- markdown summary loaded here -->
+                    </div>
+                </div>
+                
+                <!-- Panel 2: Videos -->
+                <div id="modalPanel-videos" class="modal-panel" style="display: none;">
+                    <div id="modalVideoGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px;">
+                        <!-- dynamic videos -->
+                    </div>
+                </div>
+
+                <!-- Panel 3: Resources -->
+                <div id="modalPanel-resources" class="modal-panel" style="display: none;">
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div>
+                            <h4 style="font-family: var(--font-outfit); font-size: 15px; margin-bottom: 10px; color: var(--primary);"><i class="fa-solid fa-book-open"></i> Articles & Documentation</h4>
+                            <div id="modalDocsList" style="display: flex; flex-direction: column; gap: 8px;">
+                                <!-- docs -->
+                            </div>
+                        </div>
+                        <div>
+                            <h4 style="font-family: var(--font-outfit); font-size: 15px; margin-bottom: 10px; color: var(--secondary);"><i class="fa-solid fa-code-pull-request"></i> Practice Challenges</h4>
+                            <div id="modalPracticeList" style="display: flex; flex-direction: column; gap: 8px;">
+                                <!-- practice -->
+                            </div>
+                        </div>
+                        <div>
+                            <h4 style="font-family: var(--font-outfit); font-size: 15px; margin-bottom: 10px; color: var(--warning);"><i class="fa-solid fa-flask-vial"></i> Mini Projects</h4>
+                            <div id="modalProjectList" style="display: flex; flex-direction: column; gap: 8px;">
+                                <!-- projects -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer" style="padding: 16px 24px;">
+                <button class="btn btn-secondary" id="btnModalRegenSummary">Regenerate Summary</button>
+                <button class="btn btn-primary" id="btnModalOpenChat">Chat with Note</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== YOUTUBE VIDEO PLAYER MODAL ==================== -->
+    <div class="modal" id="youtubeModal" style="display: none; z-index: 1100;">
+        <div class="modal-content" style="max-width: 750px;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="youtubeModalTitle">Watch Tutorial</h3>
+                <button class="modal-close" onclick="closeYoutubeModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 0; aspect-ratio: 16/9; background: black; display: flex;">
+                <iframe id="youtubePlayer" style="width: 100%; height: 100%; border: none;" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>

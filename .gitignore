@@ -1,0 +1,36 @@
+# Standard .NET gitignore template
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider / IntelliJ
+.idea/
+
+# VS Code
+.vscode/
+
+# SQLite Database
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+
+# Local configurations / secrets
+appsettings.Development.json
+appsettings.local.json
+
+# Uploaded notes/documents
+Uploads/*
+!Uploads/.gitkeep
